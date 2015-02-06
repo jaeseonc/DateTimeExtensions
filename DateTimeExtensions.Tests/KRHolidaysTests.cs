@@ -48,13 +48,23 @@ namespace DateTimeExtensions.Tests
             day = new DateTime(2009, 10, 5);
             Assert.IsTrue(dateTimeCulture.IsWorkingDay(day), day.ToString() + " should be a working day");
 
-            //Chuseok 2015 (with substitute holiday)
+            //Chuseok 2015 (with substitute holiday for overlapping with a sunday)
             day = new DateTime(2015, 9, 26);
             do
             {
                 Assert.IsFalse(dateTimeCulture.IsWorkingDay(day), day.ToString() + " shouldn't be a working day");
                 day = day.AddDays(1);
             } while (day <= new DateTime(2015, 9, 29));
+
+            //Chuseok 2028 (with substitute holiday for overlapping over Gaecheonjeol)
+            day = new DateTime(2028, 10, 5);
+            Assert.IsFalse(dateTimeCulture.IsWorkingDay(day), day.ToString() + " shouldn't be a working day");
+
+            //Chuseok 2036 (with substitute holiday for overlapping over a sunday and Gaecheonjeol, should add only a single day)
+            day = new DateTime(2036, 10, 6);
+            Assert.IsFalse(dateTimeCulture.IsWorkingDay(day), day.ToString() + " shouldn't be a working day");
+            day = new DateTime(2036, 10, 7);
+            Assert.IsTrue(dateTimeCulture.IsWorkingDay(day), day.ToString() + " should be a working day");
         }
 
         [Test]

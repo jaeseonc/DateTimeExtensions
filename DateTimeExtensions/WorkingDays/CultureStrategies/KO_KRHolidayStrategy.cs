@@ -112,11 +112,12 @@ namespace DateTimeExtensions.WorkingDays.CultureStrategies
                 {
                     DateTime substituteDay = dates.Last().AddDays(1);
                     while (substituteDay.DayOfWeek == DayOfWeek.Sunday ||
-                            holidayMap.TryGetValue(date, out overlappedHoliday) && overlappedHoliday != holiday)
+                            holidayMap.TryGetValue(substituteDay, out overlappedHoliday) && overlappedHoliday != holiday)
                     {
                         substituteDay = substituteDay.AddDays(1);
                     }
                     holidayMap.Add(substituteDay, holiday);
+                    break;
                 }
             }
         }
