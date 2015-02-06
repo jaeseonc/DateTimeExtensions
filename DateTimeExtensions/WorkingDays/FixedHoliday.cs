@@ -38,8 +38,8 @@ namespace DateTimeExtensions.WorkingDays
         {
         }
 
-        public FixedHoliday(string name, int month, int day, Calendar calendar)
-            : this(name, year => new DayInYear(month, day, calendar).GetDayOnYear(year))
+        public FixedHoliday(string name, int month, int day, Calendar calendar, bool skipLeapMonth=false)
+            : this(name, year => new DayInYear(month, day, calendar, skipLeapMonth).GetDayOnYear(year))
         {
         }
 

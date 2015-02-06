@@ -109,6 +109,10 @@ namespace DateTimeExtensions.Tests
             {
                 return null;
             }
+            public IDictionary<DateTime, Holiday> GetObservancesOfYear(int year)
+            {
+                return null;
+            }
         }
 
         [Locale("CustomTest")]
@@ -160,6 +164,11 @@ namespace DateTimeExtensions.Tests
             }
 
             public IEnumerable<Holiday> GetHolidaysOfYear(int year)
+            {
+                return null;
+            }
+
+            public IDictionary<DateTime, Holiday> GetObservancesOfYear(int year)
             {
                 return null;
             }

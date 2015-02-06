@@ -29,6 +29,7 @@ namespace DateTimeExtensions.WorkingDays
     {
         IEnumerable<Holiday> Holidays { get; }
         IEnumerable<Holiday> GetHolidaysOfYear(int year);
+        IDictionary<DateTime, Holiday> GetObservancesOfYear(int year);
         bool IsHoliDay(DateTime day);
     }
 }

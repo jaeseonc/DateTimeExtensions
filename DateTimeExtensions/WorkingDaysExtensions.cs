@@ -143,13 +143,10 @@ namespace DateTimeExtensions
             IWorkingDayCultureInfo workingDayCultureInfo)
         {
             var holidays = new SortedDictionary<DateTime, Holiday>();
-            foreach (Holiday holiday in workingDayCultureInfo.GetHolidaysOfYear(day.Year))
+            foreach (KeyValuePair<DateTime,Holiday> holiday in workingDayCultureInfo.GetObservancesOfYear(day.Year))
             {
-                var date = holiday.GetInstance(day.Year);
-                if (date.HasValue)
-                {
-                    holidays.Add(date.Value, holiday);
-                }
+                var date = holiday.Key;
+                holidays.Add(date, holiday.Value);
             }
             return holidays;
         }

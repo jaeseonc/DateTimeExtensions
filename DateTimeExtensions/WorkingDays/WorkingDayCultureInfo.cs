@@ -74,6 +74,11 @@ namespace DateTimeExtensions.WorkingDays
             return this.holidayStrategy.GetHolidaysOfYear(year);
         }
 
+        public IDictionary<DateTime, Holiday> GetObservancesOfYear(int year)
+        {
+            return this.holidayStrategy.GetObservancesOfYear(year);
+        }
+
         public string Name
         {
             get { return name; }

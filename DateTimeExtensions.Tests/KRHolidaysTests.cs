@@ -28,7 +28,7 @@ namespace DateTimeExtensions.Tests
             var holiday = KO_KRHolidayStrategy.Seolnal;
             var startDay = holiday.GetInstance(2015);
 
-            //Seol 2015
+            //Seolnal 2015
             DateTime day = new DateTime(2015, 2, 18);
             do
             {
@@ -36,13 +36,17 @@ namespace DateTimeExtensions.Tests
                 day = day.AddDays(1);
             } while (day <= new DateTime(2015, 2, 20));
 
-            //Seol 2016 (with substitute holiday)
+            //Seolnal 2016 (with substitute holiday)
             day = new DateTime(2016, 2, 7);
             do
             {
                 Assert.IsFalse(dateTimeCulture.IsWorkingDay(day), day.ToString() + " shouldn't be a working day");
                 day = day.AddDays(1);
             } while (day <= new DateTime(2015, 2, 10));
+
+            //First non-holiday after Chuseok 2009 (substitute holiday should not apply yet)
+            day = new DateTime(2009, 10, 5);
+            Assert.IsTrue(dateTimeCulture.IsWorkingDay(day), day.ToString() + " should be a working day");
 
             //Chuseok 2015 (with substitute holiday)
             day = new DateTime(2015, 9, 26);
@@ -77,12 +81,35 @@ namespace DateTimeExtensions.Tests
             TestHoliday(holiday, dateOnGregorian);
         }
 
+        [Test]
+        public void can_identify_LeapMonth()
+        {
+            var holiday = KO_KRHolidayStrategy.Chuseok;
+            var dateOnGregorian = new DateTime(2009, 10, 3);
+            TestHoliday(holiday, dateOnGregorian);
+        }
+
         private void TestHoliday(Holiday holiday, DateTime dateOnGregorian)
         {
             var holidayInstance = holiday.GetInstance(dateOnGregorian.Year);
             Assert.IsTrue(holidayInstance.HasValue);
             Assert.AreEqual(dateOnGregorian, holidayInstance.Value);
             Assert.IsTrue(holiday.IsInstanceOf(dateOnGregorian));
+        }
+        
+        [Test]
+        public void get_year_holidays_of_korea()
+        {
+            var koreanlWorkingDayCultureInfo = new WorkingDayCultureInfo("ko-KR");
+            var today = new DateTime(2015, 2, 5);
+            var holidays = today.AllYearHolidays(koreanlWorkingDayCultureInfo);
+
+            foreach (DateTime holidayDate in holidays.Keys)
+            {
+                var holiday = holidays[holidayDate];
+                Assert.IsTrue(holidayDate.IsWorkingDay(koreanlWorkingDayCultureInfo) == false,
+                    "holiday {0} shouln't be working day in Korea", holiday.Name);
+            }
         }
     }
 }

@@ -57,43 +57,50 @@ namespace DateTimeExtensions.WorkingDays.CultureStrategies
             {
                 var date = innerHoliday.GetInstance(year);
                 if (date.HasValue)
-                {
-                    if (innerHoliday == Seolnal || innerHoliday == Chuseok) {
+            {
+                    if (innerHoliday == Seolnal || innerHoliday == Chuseok)
+                    {
                         DateTime[] holidays = new DateTime[] { 
                             date.Value.AddDays(-1),
                             date.Value, 
                             date.Value.AddDays(1)
                         };
-                        AddSubstituteHoliday(holidayMap, holidays, innerHoliday);
+                        if (year > 2013)
+                        {
+                            AddSubstituteHoliday(holidayMap, holidays, innerHoliday);
+                        }
                         foreach (DateTime holiday in holidays)
                         {
-                            holidayMap.Add(holiday, innerHoliday);
+                            holidayMap[holiday] = innerHoliday;
                         }
                     }
                     else if (innerHoliday == Eorininal)
                     {
-                        // Special substitute holiday rule for Eorininal(May 5, children's day)
-                        // effective since Oct. 29, 2013.
                         DateTime childrensDay = date.Value;
-                        Holiday overlappedHoliday = null;
-                        while (childrensDay.DayOfWeek == DayOfWeek.Saturday ||
-                                childrensDay.DayOfWeek == DayOfWeek.Sunday ||
-                                holidayMap.TryGetValue(childrensDay, out overlappedHoliday))
+                        if (year > 2013)
                         {
-                            childrensDay = childrensDay.AddDays(1);
+                            // Special substitute holiday rule for Eorininal(May 5, children's day)
+                            // effective since Oct. 29, 2013.
+                            Holiday overlappedHoliday = null;
+                            while (childrensDay.DayOfWeek == DayOfWeek.Saturday ||
+                                    childrensDay.DayOfWeek == DayOfWeek.Sunday ||
+                                    holidayMap.TryGetValue(childrensDay, out overlappedHoliday))
+                            {
+                                childrensDay = childrensDay.AddDays(1);
+                            }
                         }
-                        holidayMap.Add(childrensDay, innerHoliday);
+                        holidayMap[childrensDay] = innerHoliday;
                     }
                     else
                     {
-                        holidayMap.Add(date.Value, innerHoliday);
+                        holidayMap[date.Value] = innerHoliday;
                     }
                 }
             }
             return holidayMap;
         }
 
-        // Special substitute holiday rule for Seol(lunisolar new year) and Chuseok(15th of 8th lunisolar month)
+        // Special substitute holiday rule for Seolnal(lunisolar new year) and Chuseok(15th of 8th lunisolar month)
         // effective since Oct. 29, 2013.
         private void AddSubstituteHoliday(IDictionary<DateTime, Holiday> holidayMap, DateTime[] dates, Holiday holiday)
         {
@@ -164,7 +171,7 @@ namespace DateTimeExtensions.WorkingDays.CultureStrategies
             {
                 if (seokgatansinil == null)
                 {
-                    seokgatansinil = new FixedHoliday("SeokgaTansinil", 4, 8, KoreanLunisolarCalendar);
+                    seokgatansinil = new FixedHoliday("SeokgaTansinil", 4, 8, KoreanLunisolarCalendar, true);
                 }
                 return seokgatansinil;
             }
@@ -206,7 +213,7 @@ namespace DateTimeExtensions.WorkingDays.CultureStrategies
             {
                 if (chuseok == null)
                 {
-                    chuseok = new FixedHoliday("Chuseok", 8, 15, KoreanLunisolarCalendar);
+                    chuseok = new FixedHoliday("Chuseok", 8, 15, KoreanLunisolarCalendar, true);
                 }
                 return chuseok;
             }

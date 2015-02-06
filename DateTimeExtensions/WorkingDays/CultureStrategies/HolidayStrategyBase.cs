@@ -69,5 +69,11 @@ namespace DateTimeExtensions.WorkingDays.CultureStrategies
             this.CheckYearHasMap(year);
             return holidaysObservancesCache[year].Select(m => m.Value);
         }
+
+        public virtual IDictionary<DateTime, Holiday> GetObservancesOfYear(int year)
+        {
+            this.CheckYearHasMap(year);
+            return holidaysObservancesCache[year];
+        }
     }
 }

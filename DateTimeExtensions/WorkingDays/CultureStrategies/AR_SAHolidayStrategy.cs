@@ -54,7 +54,7 @@ namespace DateTimeExtensions.WorkingDays.CultureStrategies
                 observancesMap.Add(endOfHajjObservance.Value.AddDays(i), EndOfHajj);
             }
 
-            observancesMap.Add(SaudiNationalDay.GetInstance(year).Value, SaudiNationalDay);
+            observancesMap[SaudiNationalDay.GetInstance(year).Value] = SaudiNationalDay;
             return observancesMap;
         }
 
