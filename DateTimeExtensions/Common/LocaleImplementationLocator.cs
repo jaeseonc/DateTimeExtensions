@@ -51,6 +51,16 @@ namespace DateTimeExtensions.Common
             return instance;
         }
 
+        public static string[] FindImplemetedLocales<T>()
+        {
+            var type = typeof (T);
+            var locales = AppDomain.CurrentDomain.GetAssemblies().ToList()
+                .SelectMany(GetTypesFromAssemblySafe).Where(p => type.IsAssignableFrom(p)).ToList()
+                .SelectMany(q => q.GetCustomAttributes(typeof(LocaleAttribute), false))
+                .Select(l => ((LocaleAttribute)l).Locale);
+            return locales.ToArray();
+        }
+
         private static Type[] GetTypesFromAssemblySafe(Assembly assembly)
         {
             try

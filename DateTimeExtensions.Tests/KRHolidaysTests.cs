@@ -5,12 +5,20 @@ using System.Text;
 using NUnit.Framework;
 using DateTimeExtensions.WorkingDays;
 using DateTimeExtensions.WorkingDays.CultureStrategies;
+using DateTimeExtensions.Common;
 
 namespace DateTimeExtensions.Tests
 {
     [TestFixture]
     public class KRHolidaysTests
     {
+        [Test]
+        public void get_all_implemented_locales()
+        {
+            string[] locales = LocaleImplementationLocator.FindImplemetedLocales<IHolidayStrategy>();
+            Assert.Contains("ko-KR", locales);
+        }
+
         [Test]
         public void can_get_strateryies()
         {
