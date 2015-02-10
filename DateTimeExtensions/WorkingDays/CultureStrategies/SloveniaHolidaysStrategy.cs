@@ -4,7 +4,7 @@ using DateTimeExtensions.Common;
 
 namespace DateTimeExtensions.WorkingDays.CultureStrategies
 {
-    [Locale("sl-SL")]
+    [Locale("sl-SI")]
     public class SloveniaHolidaysStrategy : HolidayStrategyBase
     {
         public SloveniaHolidaysStrategy()
